@@ -4,10 +4,12 @@ import axios from 'axios';
 class App extends Component {
   state = {
     clickCount: 0,
+    username: '',
   }
 
   componentDidMount() {
     this.getCount();
+    this.getUsername();
   }
 
   handleClick = () => {
@@ -37,17 +39,30 @@ class App extends Component {
   }
 
   saveUsername = () => {
-    this.setState({
-      usernameIsEditable: false,
+    axios.post('/login', {username: this.state.username})
+    .then(() => this.getUsername())
+    .catch(error => {
+      console.log('error making add click post', error);
     });
+
   }
 
   handleNameChange = (event) => {
-    //NOTES FROM KONOU, USE SERVER
-    // this.setState({
-    //   username: [event.target.value],
-    // });
-    // console.log(this.state.username);
+    this.setState({
+      username: event.target.value,
+    });console.log(this.state.username);
+}
+
+getUsername = () => {
+  axios.get('/login')
+    .then(response => {
+      this.setState({
+        username: response.data.username,
+      });
+    })
+    .catch(error => {
+      console.log('error making add click post', error);
+    });
 }
 
   render() {
@@ -55,6 +70,7 @@ class App extends Component {
       <div>
         <center>
           <h1>Click the Cookie!!</h1>
+          {this.state.username}
           <div>
             {/* Username should go here */}
             {/* The next block of code is conditional rendering.
@@ -63,8 +79,7 @@ class App extends Component {
             {this.state.usernameIsEditable ?
             <div>
              <form method="post" action="/login">
-              <input type="text" id="user" name="user" placeholder="user name" />
-              <input type="password" id="pass" name="pass" placeholder="password" />
+              <input type="text" id="user" name="user" placeholder="user name" onChange={this.handleNameChange} />
             </form>
               <button onClick={this.saveUsername}>Save Username</button> </div>:
               <button onClick={this.editUsername}>Edit Username</button>
