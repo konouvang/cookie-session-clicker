@@ -42,21 +42,35 @@ class App extends Component {
     });
   }
 
+  handleNameChange = (event) => {
+    //NOTES FROM KONOU, USE SERVER
+    // this.setState({
+    //   username: [event.target.value],
+    // });
+    // console.log(this.state.username);
+}
+
   render() {
     return (
       <div>
         <center>
           <h1>Click the Cookie!!</h1>
-          <p>
+          <div>
             {/* Username should go here */}
             {/* The next block of code is conditional rendering.
             Look at the documentation https://reactjs.org/docs/conditional-rendering.html
             if this is new to you. */}
             {this.state.usernameIsEditable ?
-              <button onClick={this.saveUsername}>Save Username</button> :
+            <div>
+             <form method="post" action="/login">
+              <input type="text" id="user" name="user" placeholder="user name" />
+              <input type="password" id="pass" name="pass" placeholder="password" />
+            </form>
+              <button onClick={this.saveUsername}>Save Username</button> </div>:
               <button onClick={this.editUsername}>Edit Username</button>
+              
             }
-          </p>
+          </div>
           <p>{this.state.clickCount}</p>
           <span
             role="img"

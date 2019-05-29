@@ -26,6 +26,33 @@ app.get('/get-clicks', (req, res) => {
   res.send({totalClicks});
 });
 
+app.post('/login', (req,res) => {
+  if(req.body.username && req.body.password) {
+    // check username and password
+    if(authenticated) {
+        // create a token and store it with the current date (if you want it to expire)
+        var token = generateAndStoreRandomString(req.body.username);
+        res.redirect("http://your.domain/path?token=" + token);
+        return;
+    }
+    // Do something if username or password wrong
+}
+// Do something if no username or password
+  res.sendStatus(200);
+});
+
+app.get('/login', (req, res) => {
+  if(!req.query.token) {
+    res.redirect("http://your.domain/login");
+    return;
+}
+// Check token in database, if it exists and it hasn't expired
+if(!authenticated) {
+    res.redirect("http://your.domain/login");
+    return;
+}
+// The user is authenticated. Do the actions required by "somePath"
+});
 // App Set //
 const PORT = process.env.PORT || 5000;
 
